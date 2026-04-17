@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FreeAgent — a free open-source terminal coding agent</title>
-  <meta name="description" content="FreeAgent — a free open-source terminal coding agent, Claude Code-style, powered by z.ai's free GLM APIs. Ships your code to GitHub and Vercel with one prompt." />
+  <title>FreeAgent — a free open-source terminal coding agent with swappable LLM backends</title>
+  <meta name="description" content="FreeAgent is a Claude Code-style terminal coding agent with swappable LLM backends — free z.ai cloud, local Qwen3.6-35B-A3B via Ollama, or any OpenAI-compatible API. Ships your code to GitHub and Vercel with one prompt." />
   <meta property="og:title" content="FreeAgent" />
-  <meta property="og:description" content="A free open-source terminal coding agent. Claude Code-style, powered by z.ai's free GLM APIs." />
+  <meta property="og:description" content="An open-source terminal coding agent with swappable LLM backends: free z.ai cloud, local Qwen3.6-35B-A3B via Ollama, or any OpenAI-compatible API." />
   <meta property="og:type" content="website" />
   <meta name="color-scheme" content="dark" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,6 +23,7 @@
     </a>
     <div class="nav-links">
       <a href="#features">Features</a>
+      <a href="#backends">Backends</a>
       <a href="#install">Install</a>
       <a href="#how">How it works</a>
       <a class="nav-cta" href="https://github.com/vasilysahrai/freeagent" target="_blank" rel="noopener">
@@ -38,24 +39,26 @@
         <span class="eyebrow">open source · mit</span>
         <h1>
           A free terminal coding agent.
-          <span class="grad">In your own shell.</span>
+          <span class="grad">Your shell, your model.</span>
         </h1>
         <p class="lede">
           <strong>FreeAgent</strong> is a Claude Code-inspired CLI that reads and edits your code,
-          runs commands, and ships projects to GitHub and Vercel — powered by
-          <a href="https://z.ai" target="_blank" rel="noopener">z.ai</a>'s free GLM APIs so it
-          genuinely costs you nothing to try.
+          runs commands, and ships projects to GitHub and Vercel. Pick the brain:
+          <a href="https://z.ai" target="_blank" rel="noopener">z.ai</a>'s free GLM cloud,
+          <strong>Qwen3.6-35B-A3B</strong> running 100% locally via
+          <a href="https://ollama.com" target="_blank" rel="noopener">Ollama</a>, or any
+          OpenAI-compatible API. Same CLI, one env var.
         </p>
         <div class="cta-row">
           <a class="btn btn-primary" href="https://github.com/vasilysahrai/freeagent" target="_blank" rel="noopener">
             View on GitHub
           </a>
-          <a class="btn btn-ghost" href="#install">Get started</a>
+          <a class="btn btn-ghost" href="#backends">Pick a backend</a>
         </div>
         <div class="badge-row">
-          <span class="badge"><span class="dot"></span> No subscription</span>
-          <span class="badge"><span class="dot"></span> Your API key</span>
-          <span class="badge"><span class="dot"></span> Self-hostable</span>
+          <span class="badge"><span class="dot"></span> Free cloud tier</span>
+          <span class="badge"><span class="dot"></span> Local Qwen3.6</span>
+          <span class="badge"><span class="dot"></span> Any OpenAI-compat API</span>
         </div>
       </div>
 
@@ -131,6 +134,72 @@
     </div>
   </section>
 
+  <section class="section" id="backends">
+    <div class="section-head">
+      <span class="kicker">backends</span>
+      <h2>Same agent. Your choice of brain.</h2>
+      <p class="section-lede">
+        FreeAgent's agent loop, tool registry, and prompt layer are identical across all backends.
+        Switch between them with a single <code>FREEAGENT_PROVIDER</code> env var — nothing else
+        changes. Three presets ship out of the box, and adding a fourth is one dict entry.
+      </p>
+    </div>
+
+    <div class="backend-grid">
+      <div class="backend">
+        <div class="backend-head">
+          <span class="backend-tag">default</span>
+          <h3>z.ai · GLM-4.5-flash</h3>
+        </div>
+        <p class="backend-sub">Free cloud tier. Fastest path from install to first prompt.</p>
+        <ul class="backend-bullets">
+          <li><strong>Cost:</strong> $0 — z.ai's free tier, no card needed.</li>
+          <li><strong>Privacy:</strong> cloud inference — z.ai sees the request payload.</li>
+          <li><strong>Best for:</strong> trying FreeAgent, everyday coding, quick scripts.</li>
+        </ul>
+<pre class="backend-snippet"><code>export ZAI_API_KEY=your_key
+freeagent</code></pre>
+      </div>
+
+      <div class="backend backend-highlight">
+        <div class="backend-head">
+          <span class="backend-tag tag-accent">local · private</span>
+          <h3>Ollama · Qwen3.6-35B-A3B</h3>
+        </div>
+        <p class="backend-sub">A 35B-parameter Mixture-of-Experts model running entirely on your machine.</p>
+        <ul class="backend-bullets">
+          <li><strong>What "35B-A3B" means:</strong> 35B total parameters on disk, but only ~3B <em>active</em> per token — frontier-class knowledge at small-model speed.</li>
+          <li><strong>Privacy:</strong> 100% local. Code, prompts, tool calls — nothing leaves <code>localhost</code>.</li>
+          <li><strong>Cost:</strong> $0 inference. Pay once in disk + VRAM.</li>
+          <li><strong>Hardware:</strong> ~22 GB VRAM / unified memory at 4-bit (RTX 4090, A6000, or 32 GB+ M-series Mac). Smaller machines? Swap in a 7B model with <code>FREEAGENT_MODEL</code>.</li>
+          <li><strong>Best for:</strong> private / proprietary codebases, long agent sessions, offline work, zero-cost heavy use.</li>
+        </ul>
+<pre class="backend-snippet"><code>ollama pull qwen3.6:35b-a3b
+export FREEAGENT_PROVIDER=ollama
+freeagent</code></pre>
+      </div>
+
+      <div class="backend">
+        <div class="backend-head">
+          <span class="backend-tag">frontier</span>
+          <h3>OpenAI · or any compatible API</h3>
+        </div>
+        <p class="backend-sub">Drop in OpenAI, Groq, Together, Fireworks, vLLM, LiteLLM, or your own proxy.</p>
+        <ul class="backend-bullets">
+          <li><strong>Cost:</strong> whatever your vendor charges per token.</li>
+          <li><strong>Privacy:</strong> up to the vendor.</li>
+          <li><strong>Best for:</strong> frontier reasoning on a gnarly refactor, or reusing an API you already pay for.</li>
+        </ul>
+<pre class="backend-snippet"><code>export FREEAGENT_PROVIDER=openai
+export OPENAI_API_KEY=sk-...
+# optional — any OpenAI-compat endpoint
+export FREEAGENT_BASE_URL=https://api.groq.com/openai/v1
+export FREEAGENT_MODEL=llama-3.1-70b-versatile
+freeagent</code></pre>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="install">
     <div class="section-head">
       <span class="kicker">install</span>
@@ -177,16 +246,28 @@ freeagent</code></pre>
       ▲                      │            │── tool_calls ─▶  files · bash · grep · gh · vercel
       │    rendered output   │            │◀── results ───
       │                      └────┬───────┘
-      │                           │ chat
+      │                           │ chat (OpenAI-compatible)
       │                           ▼
-      │                    ┌─────────────┐
-      └────────────────────│  z.ai GLM   │
-                           └─────────────┘</code></pre>
+      │          ┌──────────────────────────────┐
+      │          │   LLM backend (your pick)    │
+      └──────────│                              │
+                 │  • z.ai    → GLM-4.5-flash   │
+                 │  • ollama  → qwen3.6 · …     │
+                 │  • openai  → gpt-4o-mini     │
+                 │  • …any OpenAI-compat API    │
+                 └──────────────────────────────┘</code></pre>
       <p class="how-copy">
-        Every turn, FreeAgent sends the conversation plus a JSON schema for every tool to z.ai.
-        The model replies with either natural language or a set of tool calls. FreeAgent runs
-        those locally (files, shell, GitHub, Vercel), appends the results to the conversation,
-        and loops until the model is satisfied.
+        Every turn, FreeAgent sends the running conversation plus a JSON schema for each tool to
+        whichever backend you've configured. The model replies with either natural language (and
+        we stop) or a set of tool calls — FreeAgent executes those locally (files, shell, GitHub,
+        Vercel), appends the results to the conversation, and loops until the model is satisfied.
+      </p>
+      <p class="how-copy">
+        The backend abstraction is dead simple: every provider is an entry in a
+        <code>PROVIDERS</code> preset dict in <code>freeagent/config.py</code> — base URL, default
+        model, which env var holds the key, whether a key is required. The OpenAI Python SDK
+        handles the transport. <strong>Adding a new provider is one dict entry</strong>; the
+        agent, tools, and prompts don't change.
       </p>
     </div>
   </section>
