@@ -36,6 +36,7 @@ Tools like Claude Code, Cursor, and Aider have reset the expectation for what a 
 - **One-shot mode** — `freeagent -p "add a CI workflow"` for scripting.
 - **Workspace sandboxing** — file tools refuse paths that escape the project root.
 - **Rich terminal UI** — Claude Code-inspired panels, syntax highlighting, tool-call badges.
+- **Bring-your-own-model** — swap between z.ai (free cloud), Ollama + Qwen3.6-35B-A3B (local, private), or any OpenAI-compatible API with one env var.
 
 ---
 
@@ -59,6 +60,10 @@ pip install -e .
 
 ## Configure
 
+FreeAgent ships with three provider presets. Pick whichever one you want — the CLI, tool loop, and prompts are identical across all three.
+
+### Option A — z.ai (default, free cloud)
+
 1. Grab a free API key at **[z.ai](https://z.ai)**.
 2. Export it (or put it in a `.env` file in your project or `~/.freeagent/.env`):
 
@@ -66,12 +71,53 @@ pip install -e .
 export ZAI_API_KEY=your_key_here
 ```
 
-Optional env vars:
+That's it — run `freeagent` and you're on `glm-4.5-flash` for free.
 
-| Variable           | Default                              | Notes                             |
-| ------------------ | ------------------------------------ | --------------------------------- |
-| `FREEAGENT_MODEL`  | `glm-4.5-flash`                      | Any z.ai chat model id.           |
-| `ZAI_BASE_URL`     | `https://api.z.ai/api/paas/v4`       | z.ai's OpenAI-compatible base.    |
+### Option B — Ollama + Qwen3.6-35B-A3B (local, no key, no cost)
+
+Prefer running models locally? FreeAgent talks to [Ollama](https://ollama.com)'s OpenAI-compatible endpoint out of the box, so you can drive it with **Qwen3.6-35B-A3B** (a Mixture-of-Experts model — 35B total parameters, only ~3B active per token, so it runs on a single workstation GPU or a beefy Mac).
+
+```bash
+# 1. install and start Ollama
+brew install ollama            # or see https://ollama.com/download
+ollama serve &
+
+# 2. pull the Qwen3.6 MoE model
+ollama pull qwen3.6:35b-a3b
+
+# 3. point FreeAgent at it
+export FREEAGENT_PROVIDER=ollama
+freeagent
+```
+
+Want a different local model? Pull it with `ollama pull <name>` and set `FREEAGENT_MODEL=<name>`.
+
+### Option C — any OpenAI-compatible API
+
+```bash
+export FREEAGENT_PROVIDER=openai
+export OPENAI_API_KEY=sk-...
+export FREEAGENT_MODEL=gpt-4o-mini   # optional, this is the default
+freeagent
+```
+
+### Environment variables
+
+| Variable              | Default                              | Notes                                                        |
+| --------------------- | ------------------------------------ | ------------------------------------------------------------ |
+| `FREEAGENT_PROVIDER`  | `zai`                                | One of `zai`, `ollama`, `openai`.                            |
+| `FREEAGENT_MODEL`     | provider-specific                    | Any chat model id supported by the active provider.          |
+| `FREEAGENT_BASE_URL`  | provider-specific                    | Override the OpenAI-compatible base URL.                     |
+| `ZAI_API_KEY`         | —                                    | Key for `zai` provider.                                      |
+| `OPENAI_API_KEY`      | —                                    | Key for `openai` provider.                                   |
+
+Defaults per provider:
+
+| Provider  | Base URL                          | Default model        |
+| --------- | --------------------------------- | -------------------- |
+| `zai`     | `https://api.z.ai/api/paas/v4`    | `glm-4.5-flash`      |
+| `ollama`  | `http://localhost:11434/v1`       | `qwen3.6:35b-a3b`    |
+| `openai`  | `https://api.openai.com/v1`       | `gpt-4o-mini`        |
 
 For the GitHub and Vercel tools you'll also want the `gh` and `vercel` CLIs installed and authenticated.
 
@@ -144,10 +190,10 @@ freeagent/
 ## Tech stack
 
 - **Python 3.9+**
-- **OpenAI Python SDK** — pointed at z.ai's OpenAI-compatible endpoint
+- **OpenAI Python SDK** — pointed at any OpenAI-compatible endpoint
 - **Rich** — terminal rendering
 - **prompt_toolkit** — input editing + history
-- **z.ai GLM-4.5** — LLM backbone (free tier)
+- **Pluggable LLM backends** — z.ai GLM (default, free tier), Ollama (local, e.g. Qwen3.6-35B-A3B), or any OpenAI-compatible API
 - **GitHub CLI** and **Vercel CLI** — shell-tool-powered integrations
 
 ---

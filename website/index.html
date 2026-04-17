@@ -118,6 +118,16 @@
         <h3>One-prompt Vercel</h3>
         <p>Deploy the current directory to preview or production via the <code>vercel</code> CLI.</p>
       </div>
+      <div class="feature">
+        <div class="ficon">◉</div>
+        <h3>Local models · Qwen3.6</h3>
+        <p>Switch to Ollama with one env var and drive FreeAgent with <code>qwen3.6:35b-a3b</code> — a 35B MoE with only ~3B active params. Private, offline, zero cost.</p>
+      </div>
+      <div class="feature">
+        <div class="ficon">⇌</div>
+        <h3>Swap any OpenAI-compatible API</h3>
+        <p>z.ai, Ollama, OpenAI, or any OpenAI-compatible endpoint — pick one with <code>FREEAGENT_PROVIDER</code>. Same CLI, same tools.</p>
+      </div>
     </div>
   </section>
 
@@ -145,6 +155,14 @@
 freeagent</code></pre>
       </div>
     </div>
+    <p class="install-alt">
+      Prefer running models on your own hardware? Install
+      <a href="https://ollama.com/download" target="_blank" rel="noopener">Ollama</a>,
+      then:
+    </p>
+<pre class="install-alt-snippet"><code>ollama pull qwen3.6:35b-a3b
+export FREEAGENT_PROVIDER=ollama
+freeagent</code></pre>
   </section>
 
   <section class="section" id="how">

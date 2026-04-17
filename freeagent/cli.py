@@ -36,7 +36,11 @@ def _handle_slash(cmd: str, agent: Agent) -> bool:
         ui.info("conversation cleared.")
         return True
     if cmd == "/model":
-        ui.info(f"model: {agent.config.model}  ·  base: {agent.config.base_url}")
+        ui.info(
+            f"provider: {agent.config.provider}  ·  "
+            f"model: {agent.config.model}  ·  "
+            f"base: {agent.config.base_url}"
+        )
         return True
     if cmd == "/cwd":
         ui.info(f"workspace: {agent.config.workspace}")
@@ -50,7 +54,8 @@ def _handle_slash(cmd: str, agent: Agent) -> bool:
 def _repl(agent: Agent) -> None:
     ui.banner()
     ui.info(
-        f"model {agent.config.model} · workspace {agent.config.workspace} · "
+        f"{agent.config.provider} · {agent.config.model} · "
+        f"workspace {agent.config.workspace} · "
         "type /help for commands, ctrl-d to exit"
     )
     ui.rule()

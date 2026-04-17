@@ -1,4 +1,4 @@
-"""Thin wrapper over the OpenAI-compatible z.ai chat completions API."""
+"""Thin wrapper over OpenAI-compatible chat completions APIs (z.ai, Ollama, OpenAI)."""
 
 from __future__ import annotations
 
