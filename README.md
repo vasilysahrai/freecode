@@ -4,7 +4,7 @@
 
 `freecode` gives you an interactive AI pair-programmer in your terminal that can read and edit your code, run shell commands, and ship projects to GitHub and Vercel — all driven by a free LLM backend so it doesn't cost a cent to use.
 
-> **Live site:** https://freecode.vercel.app · **Repo:** https://github.com/vasilysahrai/freecode
+> **Live site:** https://freecode-seven.vercel.app · **Repo:** https://github.com/vasilysahrai/freecode
 
 ---
 
