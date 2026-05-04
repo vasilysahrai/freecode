@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "freeagent"
-version = "0.2.0"
-description = "FreeAgent — an open-source terminal coding agent. Free models (z.ai, Groq, OpenRouter, Ollama) and paid frontier models (OpenAI, Anthropic, Gemini) behind one CLI."
+version = "0.3.0"
+description = "FreeAgent — an open-source terminal coding agent. Free models (z.ai, Groq, OpenRouter, Ollama) and paid frontier models (OpenAI, Anthropic, Gemini) behind one CLI. Permission gating, bypass mode, inline key recovery, GitHub + Vercel integration."
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [{ name = "Vasily Sahrai" }]
