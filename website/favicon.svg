@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="10" fill="#0b0b12"/>
-  <text x="32" y="44" text-anchor="middle" font-family="ui-monospace,'JetBrains Mono',Menlo,monospace" font-size="34" font-weight="700" fill="#c084fc">▸_</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" fill="#111110"/>
+  <text x="16" y="22" text-anchor="middle"
+        font-family="Source Serif 4, Iowan Old Style, Georgia, serif"
+        font-size="20" font-weight="700" fill="#c79a52">F</text>
 </svg>
