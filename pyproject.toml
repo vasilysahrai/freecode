@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "freeagent"
-version = "0.1.0"
-description = "FreeAgent — a free, open-source terminal coding agent, Claude Code-style, powered by z.ai's free GLM APIs."
+version = "0.2.0"
+description = "FreeAgent — an open-source terminal coding agent. Free models (z.ai, Groq, OpenRouter, Ollama) and paid frontier models (OpenAI, Anthropic, Gemini) behind one CLI."
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [{ name = "Vasily Sahrai" }]
 requires-python = ">=3.9"
-keywords = ["ai", "agent", "cli", "coding-assistant", "z.ai", "glm", "open-source"]
+keywords = ["ai", "agent", "cli", "coding-assistant", "z.ai", "glm", "groq", "openrouter", "open-source"]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Environment :: Console",
@@ -34,6 +34,7 @@ Issues = "https://github.com/vasilysahrai/freeagent/issues"
 
 [project.scripts]
 freeagent = "freeagent.cli:main"
+fa = "freeagent.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["freeagent*"]
