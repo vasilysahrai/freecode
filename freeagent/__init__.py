@@ -1,3 +1,3 @@
-"""FreeAgent — a free open-source terminal coding agent."""
+"""FreeAgent — an open-source terminal coding agent."""
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
